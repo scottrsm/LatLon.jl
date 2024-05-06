@@ -2,6 +2,10 @@
 # Overview
 This module computes geo-distances between points and sets.
 In addition, can also retrieve geo-data from NASA XML files.
+The distance functions can be applied to the data from the geo-data
+from NASA files. However, it should be noted that the distance functions 
+assume a perfect sphere and do not, for instance, correct for the *polar
+flattening* of most planetary objects.
 
 # Exports
 - Distance Functions:
@@ -74,7 +78,7 @@ end
 
 """
 	geo_midpoint(coord1::Vector{Float{64}, 
-	 			 coord2::Vector{Float64}  )
+                 coord2::Vector{Float64}  )
 
 Computes and returns the mid-point of two points on the sphere.
 
@@ -118,15 +122,15 @@ function geo_midpoint(coord1::Vector{Float64},
     θ  = atan(mp[2], mp[1])
 
     # Return the lon/lat vector.
-    return C.rad_2_deg .* [θ, ϕ]
+    return MC.rad_2_deg .* [θ, ϕ]
 end
 
 
 
 """
 	geo_dist(coord1::Vector{Float64}  , 
-			 coord2::Vector{Float64}  , 
-			 radius=MC.radius::Float64 )
+             coord2::Vector{Float64}  ,
+             radius=MC.radius::Float64 )
 
 Computes the distance between two coordinates on the earth represented as 
 two lon/lat vectors in signed degrees. That is, north latitude is 
@@ -144,29 +148,29 @@ in Kilometers.
   v2 = ( cos(θ2)cos(ϕ2), sin(θ2)cos(ϕ2), sin(ϕ2) )
 - The dot product becomes:
   dp = v1 ⋅ v2 = cos(ϕ1)cos(ϕ2) ( cos(θ1)cos(θ2) + sin(θ1)sin(θ2) ) + sin(ϕ1)sin(ϕ2)
-- Simplifying
-  dp = cos(ϕ1)cos(ϕ2)cos(θ1 - θ2) + sin(ϕ1)sin(ϕ2)
-  dp = ( cos(ϕ1)cos(ϕ2) + sin(ϕ1)sin(ϕ2) ) cos(θ1 - θ2) + (1 - cos(θ1 - θ2))sin(ϕ1)sin(ϕ2)
-  dp = cos(ϕ1 - ϕ2)  + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)
+- Simplifying\n
+  dp = cos(ϕ1)cos(ϕ2) cos(θ1 - θ2) + sin(ϕ1)sin(ϕ2)\n
+  dp = ( cos(ϕ1)cos(ϕ2) + sin(ϕ1)sin(ϕ2) ) cos(θ1 - θ2) + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)\n
+  dp = cos(θ1 - θ2) cos(ϕ1 - ϕ2) + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)
 
-  Set A = cos(θ1 - θ2), B = cos(ϕ1 - ϕ2)
+  Set A = cos(θ1 - θ2), B = cos(ϕ1 - ϕ2), then\n
   dp = AB + (1 - A)sin(ϕ1)sin(ϕ2)
 - The angle between vectors in Radians is then
   ψ = acos(dp)
-- Distance between the two points on the earth on the "great circle", Δ, is
+- Distance between the two points on the sphere on the "great circle", Δ, is
   Δ = Rψ
 
 # Arguments
-- coord1::Vector{Float64} - A 2-element vector: [lon, lat] in signed degrees.
-- coord2::Vector{Float64} - A 2-element vector: [lon, lat] in signed degrees.
+- coord1::Vector{Float64} -- A 2-element vector: [lon, lat] in signed degrees.
+- coord2::Vector{Float64} -- A 2-element vector: [lon, lat] in signed degrees.
+- R::Float64              -- The radius of the sphere (Default is Earth's radius in Kilometers.)
 
 # Return
 The distance in kilometers via a "great" circle path.
 """
-function geo_dist(coord1::Vector{Float64}       , 
-			      coord2::Vector{Float64}       , 
-				  R=MC.radius=MC.radius::Float64 )
-
+function geo_dist(coord1::Vector{Float64}, 
+                  coord2::Vector{Float64},
+                  R=MC.radius::Float64    )
     # Longitude differences.
     θ1   = coord1[1] 
     θ2   = coord2[1] 
@@ -194,7 +198,9 @@ end
 
 
 """
-	latlon_set_dist(coord1s, coord2s[R=MC.radius::Float64)
+	latlon_set_dist(coord1s::Vector{Float64}, 
+                    coord2s::Vector{Float64},
+                    R=MC.radius::Float64     )
 
 Computes the set distance (in kilometers) between two sets as represented by their lat/lon coordinates.
 It does this the hard way by computing the distance of all pairs of points
@@ -203,14 +209,15 @@ between the two sets. The radius, R, defaults to the Earth's radius in Kilometer
 # Arguments
 - coord1s::Matrix{Float64} -- The coordinates of the first set.
 - coord2s::Matrix{Float64} -- The coordinates of the second set.
+- R::Float64               -- Radius of sphere (Default is Earth's radius in Kilometers.)
 
 # Return
 The minimum distance between the sets along with the index of the points for each set.
 A Tuple: (dist_in_km, set1_index, set2_index)
 """
 function latlon_set_dist(coord1s::Matrix{Float64}, 
-						 coord2s::Matrix{Float64},
-						 R=MC.radius::Float64     )
+                         coord2s::Matrix{Float64},
+                         R=MC.radius::Float64     )
     dmin = Inf
     min1 = 0
     min2 = 0
