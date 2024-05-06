@@ -1,27 +1,3 @@
-"""
-# Overview
-This module computes geo-distances between points and sets.
-In addition, can also retrieve geo-data from NASA XML files.
-The distance functions can be applied to the data from the geo-data
-from NASA files. However, it should be noted that the distance functions 
-assume a perfect sphere and do not, for instance, correct for the *polar
-flattening* of most planetary objects.
-
-# Exports
-- Distance Functions:
-	- `geo_dist`
-		- Computes the distance between two points on a sphere.
-	  	  The default sphere is the earth with distance in Kilometers.
-	- `geo_midpoint`
-		- Computes the mid lat/lon between to lat/lon coordinates. 
-	- `latlon_set_dist`
-		- Computes the distance between two geo-sets on a sphere.
-- Geo-extraction Functions:
-	- `center_latlon_from_NASA_xml_file`
-		- Retrieve lat/lon data from a NASA XML "center" file.
-	- `upath_latlon_from_NASA_xml_file`
-		- Retrieve lat/lon data from a NASA XML "upath" file.
-"""
 module LatLon
 
 import LightXML as LX
