@@ -9,7 +9,7 @@ assume a perfect sphere and do not, for instance, correct for the *polar
 flattening* of most planetary objects.
 
 # Exports
-- Distance Functions:
+- Geo-Distance Functions:
     - geo\_dist
         - Computes the distance between two points on a sphere.
           The default sphere is the earth with the radius given in Kilometers.
@@ -17,7 +17,7 @@ flattening* of most planetary objects.
         - Computes the mid lat/lon between to lat/lon coordinates. 
     - latlon\_set\_dist
         - Computes the distance between two geo-sets on a sphere.
-- Geo-extraction Functions:
+- Geo-Extraction Functions:
     - center\_latlon\_from\_NASA\_xml\_file
         - Retrieve lat/lon data from a NASA XML "center" file.
     - upath\_latlon\_from\_NASA\_xml\_file
@@ -27,7 +27,7 @@ flattening* of most planetary objects.
 CurrentModule = LatLon
 ```
 
-## Geo-distance Functions
+## Geo-Distance Functions
 
 ```@docs
 geo_dist
@@ -41,7 +41,7 @@ geo_midpoint
 latlon_set_dist
 ```
 
-## Geo-extraction Functions
+## Geo-Extraction Functions
 
 ```@docs
 center_latlon_from_NASA_xml_file
