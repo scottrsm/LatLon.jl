@@ -12,7 +12,7 @@ flattening* of most planetary objects.
 - Distance Functions:
     - geo\_dist
         - Computes the distance between two points on a sphere.
-          The default sphere is the earth with distance in Kilometers.
+          The default sphere is the earth with the radius given in Kilometers.
     - geo\_midpoint
         - Computes the mid lat/lon between to lat/lon coordinates. 
     - latlon\_set\_dist
