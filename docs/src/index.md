@@ -1,8 +1,9 @@
 # LatLon.jl Documentation
 
 # Overview
-This module computes geo-distances between points and sets.
-In addition, can also retrieve geo-data from NASA XML files.
+This module computes geo-distances between points and between sets.
+Also provided are retrieve functions for geo-data from NASA via KML files.
+
 The distance functions can be applied to the data from the geo-data
 from NASA files. However, it should be noted that the distance functions 
 assume a perfect sphere and do not, for instance, correct for the *polar
