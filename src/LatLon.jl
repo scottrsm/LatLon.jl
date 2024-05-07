@@ -2,19 +2,21 @@ module LatLon
 
 import LightXML as LX
 
-export center_latlon_from_NASA_xml_file, upath_latlon_from_NASA_xml_file
 export geo_midpoint,  geo_dist,  latlon_set_dist
+export center_latlon_from_NASA_xml_file, upath_latlon_from_NASA_xml_file
 
 
-const EARTH_RADIUS_KM = 6371.0
-
+# Internal structure that contains constants used by the functions below.
 struct ModuleConsts
 	deg_2_rad::Float64 # Conversion factor from Degrees to Radians.
 	rad_2_deg::Float64 # Conversion factor from Radians to Degrees.
-	radius::Float64    # Earth's radius in kilometers.
+	radius::Float64    # The radius of the sphere of interest.
 end
 
+# The single instance of the ModuleConsts structure.
+# Note: The radius is set to the the radius of the earth in Kilometers.
 const MC = ModuleConsts(π / 180.0, 180.0 / π, 6371.0)
+
 
 
 """
@@ -115,14 +117,16 @@ and west longitude is negative. The radius, R, defaults to the Earth's radius
 in Kilometers.
 
 # Details
-- Dot product, dp, of the geo-positions projected to the unit sphere gives the cosine of 
+  Dot product, `dp`, of the geo-positions on the unit sphere gives the cosine of 
   the angle between the two points (on the "great circle").
+  This is the information contained in `coord1` and `coord2`.
   Once the cosine is computed we can easily retrieve the angle (in Radians) and 
-  then it is easy to find the distance between the two points.
-- The Cartesian points of the lon/lat one the unit sphere are:
-  v1 = ( cos(θ1)cos(ϕ1), sin(θ1)cos(ϕ1), sin(ϕ1) ) 
+  then it is easy to find the distance between the two points 
+  -- the length of the arc connecting them on a "great circle".
+- The Cartesian points of the lon/lat on the unit sphere are:\n
+  v1 = ( cos(θ1)cos(ϕ1), sin(θ1)cos(ϕ1), sin(ϕ1) )\n
   v2 = ( cos(θ2)cos(ϕ2), sin(θ2)cos(ϕ2), sin(ϕ2) )
-- The dot product becomes:
+- The dot product becomes:\n
   dp = v1 ⋅ v2 = cos(ϕ1)cos(ϕ2) ( cos(θ1)cos(θ2) + sin(θ1)sin(θ2) ) + sin(ϕ1)sin(ϕ2)
 - Simplifying\n
   dp = cos(ϕ1)cos(ϕ2) cos(θ1 - θ2) + sin(ϕ1)sin(ϕ2)\n
@@ -130,11 +134,11 @@ in Kilometers.
   dp = cos(θ1 - θ2) cos(ϕ1 - ϕ2) + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)
 
   Set A = cos(θ1 - θ2), B = cos(ϕ1 - ϕ2), then\n
-  dp = AB + (1 - A)sin(ϕ1)sin(ϕ2)
+  dp = A B + (1 - A) sin(ϕ1) sin(ϕ2)
 - The angle between vectors in Radians is then
   ψ = acos(dp)
-- Distance between the two points on the sphere on the "great circle", Δ, is
-  Δ = Rψ
+- Distance between the two points on the "great circle", `Δ`, is\n
+  Δ = R ψ
 
 # Arguments
 - coord1::Vector{Float64} -- A 2-element vector: [lon, lat] in signed degrees.
@@ -142,7 +146,7 @@ in Kilometers.
 - R::Float64              -- The radius of the sphere (Default is Earth's radius in Kilometers.)
 
 # Return
-The distance in kilometers via a "great" circle path.
+The distance in (in the units of the radius, `R`) via a "great" circle path.
 """
 function geo_dist(coord1::Vector{Float64}, 
                   coord2::Vector{Float64},
@@ -178,7 +182,7 @@ end
                     coord2s::Vector{Float64},
                     R=MC.radius::Float64     )
 
-Computes the set distance (in kilometers) between two sets as represented by their lat/lon coordinates.
+Computes the set distance between two sets as represented by their lat/lon coordinates.
 It does this the hard way by computing the distance of all pairs of points
 between the two sets. The radius, R, defaults to the Earth's radius in Kilometers.
 
@@ -188,7 +192,9 @@ between the two sets. The radius, R, defaults to the Earth's radius in Kilometer
 - R::Float64               -- Radius of sphere (Default is Earth's radius in Kilometers.)
 
 # Return
-The minimum distance between the sets along with the index of the points for each set.
+The minimum distance (in the same units as `R`) between the sets along with 
+the index of the points for each set representing the closest points in each set.
+
 A Tuple: (dist_in_km, set1_index, set2_index)
 """
 function latlon_set_dist(coord1s::Matrix{Float64}, 
