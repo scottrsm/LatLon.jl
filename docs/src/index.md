@@ -10,8 +10,9 @@ assume a perfect sphere and do not, for instance, correct for the *polar
 flattening* of most planetary objects.
 
 **NOTE:** This module uses a constant *internal* structure, `MC`.
-The values from this structure are used several of the functions below.
-In addition, some functions use values from this structure as default values.
+The values from this structure are used in several of the functions below.
+In addition, some functions use values from this structure as default values
+for some of the arguments.
 
 # Exports
 - Geo-Distance Functions:
