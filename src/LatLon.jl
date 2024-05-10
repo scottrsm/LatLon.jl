@@ -14,7 +14,7 @@ struct ModuleConsts
 end
 
 # The single instance of the ModuleConsts structure.
-# Note: The radius is set to the the radius of the earth in Kilometers.
+# Note: The radius is set to the radius of the Earth in Kilometers.
 const MC = ModuleConsts(π / 180.0, 180.0 / π, 6371.0)
 
 
@@ -24,7 +24,8 @@ const MC = ModuleConsts(π / 180.0, 180.0 / π, 6371.0)
 
 Retrieves the latitude and longitude from a "center" NASA kml file 
 as a matrix of `Float64: 2xN`. Here `N` is the number of points.
-Each column of this matrix (a 2-vector) is a lon/lat pair.
+Each column of this matrix (a 2-vector) is a lon/lat pair, in 
+signed decimal degrees.
 """
 function center_latlon_from_NASA_xml_file(file::String)
     kml_doc = LX.parse_file(file)
@@ -42,7 +43,8 @@ end
 Retrieves the latitude and longitude of the annular ring representing
 the boundary of the "total" part of an eclipse from a "upath" NASA kml file
 as a matrix of `Float64: 2xN`. Here, `N` is the number of points.
-Each column of this matrix (a 2-vector) is a lon/lat pair.
+Each column of this matrix (a 2-vector) is a lon/lat pair, in 
+signed decimal degrees.
 """
 function upath_latlon_from_NASA_xml_file(file::String)
     kml_doc = LX.parse_file(file)
@@ -58,7 +60,8 @@ end
 	geo_midpoint(coord1::Vector{Float{64}, 
                  coord2::Vector{Float64}  )
 
-Computes and returns the mid-point of two points on the sphere.
+Computes and returns the mid-point of two points on the sphere as 
+a vector (lon/lat) in signed decimal degrees.
 
 # Arguments
 - coord1::Vector{Float64} - A 2-element vector: [lon, lat] in signed degrees.
@@ -110,7 +113,7 @@ end
              coord2::Vector{Float64}  ,
              radius=MC.radius::Float64 )
 
-Computes the distance between two coordinates on the earth represented as 
+Computes the distance between two coordinates on a sphere represented as 
 two lon/lat vectors in signed degrees. That is, north latitude is 
 positive, south latitude is negative, while east longitude is positive 
 and west longitude is negative. The radius, R, defaults to the Earth's radius
@@ -146,7 +149,7 @@ in Kilometers.
 - R::Float64              -- The radius of the sphere (Default is Earth's radius in Kilometers.)
 
 # Return
-The distance in (in the units of the radius, `R`) via a "great" circle path.
+The distance in (in the units of the radius, `R`) via a "great circle" path.
 """
 function geo_dist(coord1::Vector{Float64}, 
                   coord2::Vector{Float64},
@@ -172,7 +175,7 @@ function geo_dist(coord1::Vector{Float64},
     dp = A * B + (1 - A) * sin(ϕ1) * sin(ϕ2)
     
     # Retrieve the angle from the cosine of the angle between the two points in Radians.
-    # Then easily compute the distance between the two points on earth based on its radius.
+    # Then easily compute the distance between the two points on the sphere  based on its radius.
     return R * acos(dp)
 end
 
@@ -182,7 +185,8 @@ end
                     coord2s::Vector{Float64},
                     R=MC.radius::Float64     )
 
-Computes the set distance between two sets as represented by their lat/lon coordinates.
+Computes the set distance between two sets as represented by their lat/lon coordinates,
+in singed decimal degrees.
 It does this the hard way by computing the distance of all pairs of points
 between the two sets. The radius, R, defaults to the Earth's radius in Kilometers.
 
@@ -193,7 +197,8 @@ between the two sets. The radius, R, defaults to the Earth's radius in Kilometer
 
 # Return
 The minimum distance (in the same units as `R`) between the sets along with 
-the index of the points for each set representing the closest points in each set.
+the index of the points for each set representing the closest points from 
+each set.
 
 A Tuple: (dist_in_km, set1_index, set2_index)
 """
