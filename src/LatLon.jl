@@ -168,10 +168,11 @@ function geo_dist(coord1::Vector{Float64},
     A = cos(dθ)
     B = cos(dϕ)
 
-    # The dot product of the Cartesian coordinates of the two points 
-    # that the lat/lon coordinates represent (on the unit sphere) is
-    # the cosine of the angle between the two points. 
-    # See the documentation section "Details" above.
+    #= The dot product of the Cartesian coordinates of the two points 
+       that the lat/lon coordinates represent (on the unit sphere) is
+       the cosine of the angle between the two points. 
+       See the documentation section "Details" above.
+	=#
     dp = A * B + (1 - A) * sin(ϕ1) * sin(ϕ2)
     
     # Retrieve the angle from the cosine of the angle between the two points in Radians.
