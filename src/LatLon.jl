@@ -22,10 +22,16 @@ const MC = ModuleConsts(π / 180.0, 180.0 / π, 6371.0)
 """
     center_latlon_from_NASA_xml_file(file::String)
 
-Retrieves the latitude and longitude from a "center" NASA kml file 
+Retrieves the latitude and longitude from a "center" NASA KML file 
 as a matrix of `Float64: 2xN`. Here `N` is the number of points.
 Each column of this matrix (a 2-vector) is a lon/lat pair, in 
 signed decimal degrees.
+
+# Arguments
+- file::String -- String representing a lon/lat file in NASA KML format.
+
+# Return
+::Matrix{Float64} -- 2xN matrix of Lon/Lat pairs.
 """
 function center_latlon_from_NASA_xml_file(file::String)
     kml_doc = LX.parse_file(file)
@@ -41,10 +47,17 @@ end
     upath_latlon_from_NASA_xml_file(file::String)
 
 Retrieves the latitude and longitude of the annular ring representing
-the boundary of the "total" part of an eclipse from a "upath" NASA kml file
+the boundary of the "total" part of an eclipse from a "upath" NASA KML file
 as a matrix of `Float64: 2xN`. Here, `N` is the number of points.
 Each column of this matrix (a 2-vector) is a lon/lat pair, in 
 signed decimal degrees.
+The resulting set of points graphically sweeps out an annulus.
+
+# Arguments
+- file::String -- String representing a  Lon/Lat file in NASA "upath" KML format.
+
+# Return
+::Matrix{Float64} -- 2xN matrix of Lon/Lat pairs.
 """
 function upath_latlon_from_NASA_xml_file(file::String)
     kml_doc = LX.parse_file(file)
@@ -225,6 +238,4 @@ function latlon_set_dist(coord1s::Matrix{Float64},
     return (dmin, min1, min2)
 end
 
-
 end # LatLon Module
-
