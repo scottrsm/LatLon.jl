@@ -126,7 +126,7 @@ end
              coord2::Vector{Float64}  ,
              radius=MC.radius::Float64 )
 
-Computes the distance between two coordinates on a sphere represented as 
+Computes the distance between two points on a sphere represented as 
 two lon/lat vectors in signed degrees. That is, north latitude is 
 positive, south latitude is negative, while east longitude is positive 
 and west longitude is negative. The radius, R, defaults to the Earth's radius
@@ -162,7 +162,7 @@ in Kilometers.
 - R::Float64              -- The radius of the sphere (Default is Earth's radius in Kilometers.)
 
 # Return
-The distance in (in the units of the radius, `R`) via a "great circle" path.
+The distance (in the units of the radius, `R`) via a "great circle" path.
 """
 function geo_dist(coord1::Vector{Float64}, 
                   coord2::Vector{Float64},
@@ -199,8 +199,8 @@ end
                     coord2s::Vector{Float64},
                     R=MC.radius::Float64     )
 
-Computes the set distance between two sets as represented by their lat/lon coordinates,
-in singed decimal degrees.
+Computes the set distance between two sets as represented by their lon/lat coordinates,
+in signed decimal degrees.
 It does this the hard way by computing the distance of all pairs of points
 between the two sets. The radius, R, defaults to the Earth's radius in Kilometers.
 
@@ -239,3 +239,4 @@ function latlon_set_dist(coord1s::Matrix{Float64},
 end
 
 end # LatLon Module
+
