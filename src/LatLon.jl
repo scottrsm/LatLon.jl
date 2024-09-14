@@ -140,21 +140,21 @@ in Kilometers.
   then it is easy to find the distance between the two points 
   -- the length of the arc connecting them on a "great circle".
 - The Cartesian points of the lon/lat on the unit sphere are:\n
-  v1 = ( cos(θ1)cos(ϕ1), sin(θ1)cos(ϕ1), sin(ϕ1) )\n
-  v2 = ( cos(θ2)cos(ϕ2), sin(θ2)cos(ϕ2), sin(ϕ2) )
+  ``{\\bf v}_1 = ( \\cos(\\theta_1)\\cos(\\phi_1), \\sin(\\theta_1)\\cos(\\phi_1), \\sin(\\phi_1) )``\n
+  ``{\\bf v}_2 = ( \\cos(\\theta_2)\\cos(\\phi_2), \\sin(\\theta_2)\\cos(\\phi_2), \\sin(\\phi_2) )``
 - The dot product becomes:\n
-  dp = v1 ⋅ v2 = cos(ϕ1)cos(ϕ2) ( cos(θ1)cos(θ2) + sin(θ1)sin(θ2) ) + sin(ϕ1)sin(ϕ2)
+  ``dp = {\\bf v}_1 {\\cdot} {\\bf v}_2 = \\cos(\\phi_1)\\cos(\\phi_2) \\left( \\cos(\\theta_1)\\cos(\\theta_2) + \\sin(\\theta_1)\\sin(\\theta_2) \\right) + \\sin(\\phi_1)\\sin(\\phi_2)``
 - Simplifying\n
-  dp = cos(ϕ1)cos(ϕ2) cos(θ1 - θ2) + sin(ϕ1)sin(ϕ2)\n
-  dp = ( cos(ϕ1)cos(ϕ2) + sin(ϕ1)sin(ϕ2) ) cos(θ1 - θ2) + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)\n
-  dp = cos(θ1 - θ2) cos(ϕ1 - ϕ2) + (1 - cos(θ1 - θ2)) sin(ϕ1)sin(ϕ2)
+  ``dp = \\cos(\\phi_1)\\cos(\\phi_2) \\cos(\\theta_1 - \\theta_2) + \\sin(\\phi_1)\\sin(\\phi_2)``\n
+  ``dp = \\left( \\cos(\\phi_1)\\cos(\\phi_2) + \\sin(\\phi_1)\\sin(\\phi_2) \\right) \\cos(\\theta_1 - \\theta_2) + (1 - \\cos(\\theta_1 - \\theta_2)) \\sin(\\phi_1)\\sin(\\phi_2)``\n
+  ``dp = \\cos(\\theta_1 - \\theta_2) \\cos(\\phi_1 - \\phi_2) + (1 - \\cos(\\theta_1 - \\theta_2)) \\sin(\\phi_1)\\sin(\\phi_2)``
 
-  Set A = cos(θ1 - θ2), B = cos(ϕ1 - ϕ2), then\n
-  dp = A B + (1 - A) sin(ϕ1) sin(ϕ2)
-- The angle between vectors in Radians is then
-  ψ = acos(dp)
-- Distance between the two points on the "great circle", `Δ`, is\n
-  Δ = R ψ
+  Set ``A = \\cos(\\theta_1 - \\theta_2), B = \\cos(\\phi_1 - \\phi_2)``, then\n
+  ``dp = A \\, B + (1 - A) \\sin(\\phi_1) \\sin(\\phi_2)``
+- The angle between vectors in Radians is then\n
+  ``\\psi = \\cos^{-1}(dp)``.
+- Distance between the two points on the "great circle", ``\\Delta``, is\n
+  ``\\Delta = R \\psi``
 
 # Arguments
 - coord1::Vector{Float64} -- A 2-element vector: [lon, lat] in signed degrees.
