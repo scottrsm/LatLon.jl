@@ -132,6 +132,9 @@ positive, south latitude is negative, while east longitude is positive
 and west longitude is negative. The radius, R, defaults to the Earth's radius
 in Kilometers.
 
+**NOTE:** The distance function described below is **NOT** the usual *Haversine* formula.
+Also, the formula below works for the entire sphere and is computationally more efficient.
+
 # Details
   Dot product, `dp`, of the geo-positions on the unit sphere gives the cosine of 
   the angle between the two points (on the "great circle").
