@@ -14,6 +14,6 @@ for the whole sphere, including very close and near-antipodal points.
 A Jupyter notebook is provided which examines recent solar eclipses in the US.
 
 ## Documentation
-- HTML (stable, v1.2.0): https://scottrsm.github.io/LatLon.jl/stable/
+- HTML (stable, v1.2.1): https://scottrsm.github.io/LatLon.jl/stable/
 - HTML (latest, built from `main`): https://scottrsm.github.io/LatLon.jl/dev/
 - Markdown source: [docs/src/index.md](docs/src/index.md)
