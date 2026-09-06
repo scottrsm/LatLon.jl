@@ -97,7 +97,31 @@ end
                  coord2::AbstractVector{<:Real})
 
 Computes and returns the mid-point of two points on the sphere as 
-a vector (lon/lat) in signed decimal degrees.
+a vector (lon/lat) in signed decimal degrees. The mid-point is the point
+on the "great circle" through the two points that is equidistant from both.
+
+# Details
+  The two lon/lat positions are mapped to unit vectors in Cartesian space,
+  the vectors are summed, and the sum is projected back onto the unit sphere.
+  The sum of two unit vectors bisects the angle between them and lies in the
+  plane they span, so its projection onto the sphere lies on the "great circle"
+  through the two points at equal angular distance from each.
+- With longitudes ``\\theta_i`` and latitudes ``\\phi_i`` (in radians), the Cartesian
+  points on the unit sphere are:\n
+  ``{\\bf v}_i = ( \\cos(\\theta_i)\\cos(\\phi_i), \\sin(\\theta_i)\\cos(\\phi_i), \\sin(\\phi_i) )``
+- The (un-normalized) mid-point vector is:\n
+  ``{\\bf m} = {\\bf v}_1 + {\\bf v}_2 = (x, y, z)``
+- Procedure to Compute the Mid-Point:
+    - Normalize:\n
+         ``n = \\sqrt{x^2 + y^2 + z^2}``
+    - Recover the latitude and longitude of the projected point:\n
+         ``\\phi = \\arcsin(z / n), \\quad \\theta = {\\rm atan}(y, x)``
+    - Convert ``(\\theta, \\phi)`` back to signed degrees.
+
+  When the points are antipodal, ``{\\bf v}_1 + {\\bf v}_2 = {\\bf 0}`` and the mid-point is not
+  unique; a `DomainError` is thrown. As the points approach antipodal, ``n`` becomes
+  small and the result grows increasingly sensitive to rounding. If the mid-point is a
+  pole, the returned longitude is arbitrary.
 
 # Arguments
 - coord1::AbstractVector{<:Real} - A 2-element vector: [lon, lat] in signed degrees.
